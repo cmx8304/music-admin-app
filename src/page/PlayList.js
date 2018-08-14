@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-//添加三个依赖
-import {Form, Input, Button} from 'antd';
+//添加四个依赖
+import {Form, Input, Button, Modal} from 'antd';
 
 //创建Form、FormItem实例
 const FormItem = Form.Item;
@@ -18,9 +18,31 @@ class PlayList extends Component {
     handleSubmit = e =>{
         e.preventDefault();
         //调用Form的校验器
-        this.props.form.validateFieldsAndScroll((err,value) => {
+        this.props.form.validateFieldsAndScroll((err,values) => {
             if(!err){
-                console.log('Received values of form',value);
+                console.log('Received values of form',values);
+
+                fetch('/api/playlist/add',{
+                    body:JSON.stringify(values),
+                    method:'POST',
+                    headers:{
+                        'content-type':'application/json'
+                    }
+                })
+                .then(function(response){
+                    return response.json();
+                    })
+                .then(data => {
+                    console.log(data);
+                    Modal.info({
+                        title:'成功',
+                        content:<span>提交歌单成功!</span>,
+                        onOk: () =>{
+                            //表单提交成功后将之前提交的数据清除
+                            this.props.form.resetFields();
+                        }
+                    });
+                });
             }
         });
     };
