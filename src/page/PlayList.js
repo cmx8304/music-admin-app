@@ -61,7 +61,7 @@ class PlayList extends Component {
                 xs: {span: 24},
                 sm: {span: 12}
             }
-        };
+        };      
         //{...formItemLayout}相当于labelCol={formItemLayout,labelCol} wrapperCol={formItemLayout.warpperCol}
         return (
             <Form onSubmit={this.handleSubmit}>
