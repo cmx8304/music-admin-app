@@ -3,6 +3,8 @@ import {Table} from 'antd';
 
 import MusicSelect from '../component/MusicSelect';
 import Remote from '../Remote';
+import {connect} from 'react-redux';
+import { play } from '../actions';
 
 class PlayLists extends Component {
     //state 等于一个 json 对象，这个对象的属性是 data ，data 是一个数组
@@ -111,6 +113,25 @@ class PlayLists extends Component {
                             }}>
                                 选择歌曲
                             </a>
+                            |
+                            <a 
+                             href="javascript:;"
+                             onClick={() => {
+                                //任意的component通过connect()调用包含之后，这个component的props中都会包含一个dispatch函数
+                                //和它需要的任意state(global state中的一部分经过变换而来)。
+                                //其中，dispatch function的获取很简单，我们在component内部只需要直接使用this.props.dispatch就能拿到一个用来dispatch actions的function。
+                                //通过import { play } from '../actions';实现对应的function
+                                //而对于component所需要的state数据，则需要一个额外的selector function作为connect的参数传入，
+                                //这个selector function的参数是global Redux store’s state，它会把这个global state进行变换，处理成component所需要的数据返回。
+                                 this.props.dispatch(
+                                     play(
+                                         //传入参数
+                                         'http://qgt-document.oss-cn-beijing.aliyuncs.com/Hello.mp3'
+                                     )
+                                 )
+                             }}>
+                                播放歌曲
+                             </a>
                         </span>
                     )
                 }
@@ -139,4 +160,4 @@ class PlayLists extends Component {
     }
 }
 
-export default PlayLists;
+export default connect()(PlayLists);

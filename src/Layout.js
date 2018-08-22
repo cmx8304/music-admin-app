@@ -4,6 +4,10 @@ import { Layout, Menu, Icon } from 'antd';
 
 //withRouter组件实现页面的不刷新加载
 import { withRouter } from 'react-router-dom';
+//react提供的一个播放器的小的组件
+import ReactPlayer from 'react-player';
+import {connect} from 'react-redux';
+
 const { Header, Content, Footer, Sider } = Layout;
 
 class LayoutComponent extends Component {
@@ -36,7 +40,15 @@ class LayoutComponent extends Component {
                 </Menu>
                 </Sider>
                 <Layout style={{ marginLeft: 200 }}>
-                <Header style={{ background: '#fff', padding: 0 }} />
+                <Header style={{ background: '#fff', padding: 0 }} >
+                    <ReactPlayer 
+                        height={30}
+                        width="100%"
+                        url={this.props.playUrl}
+                        playing
+                        controls
+                    />{' '}
+                </Header>
                 <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
                     <div style={{ padding: 24, background: '#fff', textAlign: 'center' }}>
                         {this.props.body}
@@ -51,4 +63,10 @@ class LayoutComponent extends Component {
     }
 }
 
-export default withRouter(LayoutComponent);
+const mapStateToProps = state =>{
+    return {
+        playUrl: state.src
+    };
+};
+
+export default connect(mapStateToProps)(withRouter(LayoutComponent));
