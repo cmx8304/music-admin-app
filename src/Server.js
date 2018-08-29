@@ -89,9 +89,23 @@ app.post('/upload',upload.single('music'),function(req,res){
     res.json(req.file);
 });
 app.post('/api/music/add',function(req,res){
-    req.body.id = uuidv4();
+    /*req.body.id = uuidv4();
     req.body.url = 'uploads/'+req.body.url;
     musicDatas.push(req.body)
+    res.json(req.body);*/
+
+    if(!req.body.id){
+        req.body.id = uuidv4();
+        req.body.url = "uploads/" + req.body.url;
+        musicDatas.push(req.body);
+    }else{
+        musicDatas.map(mid => {
+            if(req.body.id === mid.id){
+                mid.title = req.body.title;
+                mid.url = 'uploads/' + req.body.url;
+            }
+        });
+    }
     res.json(req.body);
 });
 

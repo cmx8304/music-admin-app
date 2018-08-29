@@ -90,6 +90,10 @@ class LayoutComponent extends Component {
                     <Icon type="video-camera" />
                     <span className="nav-text">歌曲管理</span>
                     </Menu.Item>
+                    <Menu.Item key="/songlist">
+                    <Icon type="video-camera" />
+                    <span className="nav-text">歌曲列表</span>
+                    </Menu.Item>
                 </Menu>
                 </Sider>
                 <Layout style={{ marginLeft: 200 }}>

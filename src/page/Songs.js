@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Form, Input, Button, Modal, Upload, message, Icon} from 'antd';
 
 import Remote from '../Remote';
+import queryString from 'query-string';
 
 const FormItem = Form.Item;
 const {TextArea} = Input;
@@ -25,8 +26,26 @@ const props = {
     };
 
 class Songs extends Component {
+    state = {
+        id: null
+    };
     componentWillMount() {
         document.title = "歌曲管理";
+        //?id=XXX，使用queryString来完成url的解析
+        const id = queryString.parse(window.location.search).id;
+        if(!id){
+            return;
+        }
+        this.setState({id});
+        Remote(
+            '/api/music/query?ids=' + JSON.stringify([id]),
+            {method: 'GET'},
+            data => {
+                this.props.form.setFieldsValue({
+                    title: data[0].title
+                });
+            }
+        );
     }
 
     handleSubmit = e =>{
@@ -35,6 +54,7 @@ class Songs extends Component {
             if(!err){
                 console.log('Received values of form:',  values);
                 const body = {
+                    id: this.state.id,
                     title: values.title,
                     url: values.file.file.response.filename
                 };
